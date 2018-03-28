@@ -17,28 +17,27 @@ namespace ImageService
 
         public string AddFile(string path, out bool result)
         {
-            string msg = "all good";
+            string newPath;
             result = true;
             try
             {
-                Directory.CreateDirectory(path: m_OutputFolder);
+                DirectoryInfo di = Directory.CreateDirectory(path: m_OutputFolder);
+                Console.WriteLine("do the directory hidden - Image model");
+                //di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 DateTime create = File.GetCreationTime(path);
                 string year = create.Year.ToString();
                 string month = create.Month.ToString();
-                string newPath = m_OutputFolder + "\"" + year + "\"" + month;
+                newPath = m_OutputFolder + "\\" + year + "\\" + month;
                 //System.IO.Directory.CreateDirectory(m_OutputFolder+ "\"" + year);
                 Directory.CreateDirectory(path: newPath);
-                System.IO.File.Copy(path, newPath);
+                File.Copy(sourceFileName: path, destFileName: newPath);
             }
             catch (Exception e)
             {
-                msg = e.Message;
                 result = false;
+                return e.Message;
             }
-            
-            
-
-            return msg;
+            return newPath;
         }
     }
 }

@@ -38,10 +38,12 @@ namespace ImageService
     {
 
         private int eventId = 1;
-        
+        private ILoggingModel logMod;
+        private ImageServer server;
 
         public ImageService(string[] args)
         {
+
             InitializeComponent();
             
 
@@ -67,10 +69,10 @@ namespace ImageService
         protected override void OnStart(string[] args)
         {
 
-            LoggingModel logMod = new LoggingModel();
+            logMod = new LoggingModel();
 
-            logMod.MessageRecieved += new EventHandler<MessageRecievedEventArgs>(this.OnMsg);
-
+            //logMod.MessageRecieved += new EventHandler<MessageRecievedEventArgs>(this.OnMsg);
+            logMod.MessageRecieved += OnMsg;
 
 
 
