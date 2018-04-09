@@ -11,6 +11,7 @@ namespace ImageService
     class LoggingModel : ILoggingModel
     {
         public event EventHandler<MessageRecievedEventArgs> MessageRecieved;
+
         public void Log(string message, MessageTypeEnum type)
         {
             MessageRecievedEventArgs msg = new MessageRecievedEventArgs();

@@ -32,15 +32,15 @@ namespace ImageService
         {
             IDirectoryHandler d_handle = new DirectoyHandler(m_logging,m_controller,path);
             CommandRecieved += d_handle.OnCommandRecieved;
-            d_handle.DirectoryClose += OnCloseDir;
+            d_handle.DirectoryClose += OnCloseServer;
 
         }
-        private void OnCloseDir(object sender, DirectoryCloseEventArgs args)
+        private void OnCloseServer(object sender, DirectoryCloseEventArgs args)
         {
             m_logging.Log(args.Message, MessageTypeEnum.INFO);
             IDirectoryHandler d_handler = (IDirectoryHandler)sender;
             CommandRecieved -= d_handler.OnCommandRecieved;
-            //############# how to remove the evenr - Directory Close - in Directory Handler #######33
+            //############# how to remove the event - Directory Close - in Directory Handler #######33
         }
         private void SendCommand(CommandRecievedEventArgs e)
         {

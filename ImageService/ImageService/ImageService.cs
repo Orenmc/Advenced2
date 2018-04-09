@@ -96,8 +96,19 @@ namespace ImageService
         }
         private void OnMsg(object src, MessageRecievedEventArgs mra)
         {
-            
-                eventLog1.WriteEntry(mra.Message);
+            if(mra.Status == MessageTypeEnum.FAIL)
+            {
+                eventLog1.WriteEntry(mra.Message,EventLogEntryType.Error);
+            } else if (mra.Status == MessageTypeEnum.INFO)
+            {
+                eventLog1.WriteEntry(mra.Message, EventLogEntryType.Information);
+            } else
+            {
+                eventLog1.WriteEntry(mra.Message, EventLogEntryType.Warning);
+            }
+
+            Console.WriteLine("write to log");
+
         }
 
         protected override void OnStop()
