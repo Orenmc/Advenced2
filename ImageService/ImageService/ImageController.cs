@@ -30,7 +30,7 @@ namespace ImageService
 
         public string ExecuteCommand(int commandID, string[] args, out bool result)
         {
-           Console.WriteLine("dont forget to do this in tasks");
+           Console.WriteLine("image controller - dont forget to do this in tasks");
            return commands[commandID].Execute(args, out result);
         }
     }

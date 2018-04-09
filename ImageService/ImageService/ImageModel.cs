@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 
 
@@ -22,6 +23,12 @@ namespace ImageService
 
         #endregion
 
+        public ImageModel()
+        {
+            m_OutputFolder = ConfigurationManager.AppSettings.Get("OutputDir");
+            //m_thumbnailSize = Int32.Parse(ConfigurationManager.AppSettings.Get("ThumbnailSize"));
+        }
+
         public string AddFile(string path, out bool result)
         {
             string newPath;
@@ -32,8 +39,29 @@ namespace ImageService
 
                 DateTime imageCreate = GetDateTakenFromImage(path); //takes the original creatition date of the image
 
-                newPath = CreateFolder(imageCreate); //create Folder with the year and day path - return the new path as string
-                File.Move(sourceFileName: path, destFileName: newPath); // move image to the new path
+                string year = imageCreate.Year.ToString();
+                string month = imageCreate.Month.ToString();
+                newPath = m_OutputFolder + "\\" + year + "\\" + month;
+
+                Directory.CreateDirectory(path: m_OutputFolder + "\\" + year);
+                Directory.CreateDirectory(path: m_OutputFolder + "\\" + year + "\\" + month);
+
+
+
+                //File.Move("C:\\Snir\\orenId.PNG", "C:\\Snir\\test\\2018\\3");
+                string file_name = Path.GetFileName(path);
+                string file_name_without = Path.GetFileNameWithoutExtension(path);
+                string extention = Path.GetExtension(path);
+                string test =Path.Combine(newPath ,file_name);
+                int counter = 0;
+                while (File.Exists(test))
+                {
+                    counter++;
+                   // Console.WriteLine(test);
+                    test = Path.Combine(newPath,file_name_without , counter.ToString(), extention);
+                }
+               File.Move(path, test);
+
             }
             catch (Exception e)
             {
@@ -49,15 +77,7 @@ namespace ImageService
            // Console.WriteLine("do the directory hidden - Image model");
             di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
         }
-        private string CreateFolder(DateTime dateImage)
-        {
-            string year = dateImage.Year.ToString();
-            string month = dateImage.Month.ToString();
-            string newPath = m_OutputFolder + "\\" + year + "\\" + month;
-            Directory.CreateDirectory(path: newPath);
 
-            return newPath;
-        }
         //we init this once so that if the function is repeatedly called
         //it isn't stressing the garbage man
         private static Regex r = new Regex(":");

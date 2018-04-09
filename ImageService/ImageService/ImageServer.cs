@@ -10,18 +10,22 @@ namespace ImageService
     class ImageServer
     {
         #region Members
-        private IImageController m_controller;
+        private IImageController c_controller;
         private ILoggingModel m_logging;
         #endregion
 
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
+        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
+
         #endregion
 
-        public ImageServer()
+        public ImageServer(IImageController controller, ILoggingModel logger)
         {
+            c_controller = controller;
+            m_logging = logger;
 
-            string[] dir = (ConfigurationSettings.AppSettings.Get("Handler").Split(';'));
+            string[] dir = (ConfigurationManager.AppSettings.Get("Handler").Split(';'));
 
             foreach (string path in dir){
                 CreateHandler(path);
@@ -30,17 +34,17 @@ namespace ImageService
 
         private void CreateHandler(string path)
         {
-            IDirectoryHandler d_handle = new DirectoyHandler(m_logging,m_controller,path);
+            IDirectoryHandler d_handle = new DirectoyHandler(m_logging,c_controller,path);
             CommandRecieved += d_handle.OnCommandRecieved;
-            d_handle.DirectoryClose += OnCloseServer;
+            DirectoryClose += d_handle.StopHandleDirectory;
 
         }
-        private void OnCloseServer(object sender, DirectoryCloseEventArgs args)
+        public void OnCloseServer()
         {
-            m_logging.Log(args.Message, MessageTypeEnum.INFO);
-            IDirectoryHandler d_handler = (IDirectoryHandler)sender;
-            CommandRecieved -= d_handler.OnCommandRecieved;
-            //############# how to remove the event - Directory Close - in Directory Handler #######33
+            m_logging.Log("close Service", MessageTypeEnum.INFO);
+            Console.WriteLine("on close service - remove evemts");
+
+            DirectoryClose?.Invoke(this, null);
         }
         private void SendCommand(CommandRecievedEventArgs e)
         {

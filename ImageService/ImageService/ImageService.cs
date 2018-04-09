@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Configuration;
 
 public enum ServiceState
 {
@@ -38,42 +39,38 @@ namespace ImageService
     {
 
         private int eventId = 1;
-        private ILoggingModel logMod;
+        private ILoggingModel m_logging;
+        private IImageController c_controller;
+        private IImageModel m_imageService;
         private ImageServer server;
 
         public ImageService(string[] args)
         {
+                InitializeComponent();
 
-            InitializeComponent();
-            
+                string eventSourceName = ConfigurationManager.AppSettings.Get("SourceName");
+                string logName = ConfigurationManager.AppSettings.Get("LogName");
 
-            string eventSourceName = "MySource";
-            string logName = "MyNewLog";
-            if (args.Count() > 0)
-            {
-                eventSourceName = args[0];
-            }
-            if (args.Count() > 1)
-            {
-                logName = args[1];
-            }
-            eventLog1 = new System.Diagnostics.EventLog();
-            if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
-            {
-                System.Diagnostics.EventLog.CreateEventSource(eventSourceName, logName);
-            }
-            eventLog1.Source = eventSourceName;
-            eventLog1.Log = logName;
+                eventLog1 = new System.Diagnostics.EventLog();
+                if (!System.Diagnostics.EventLog.SourceExists(eventSourceName))
+                {
+                    System.Diagnostics.EventLog.CreateEventSource(eventSourceName, logName);
+                }
+                eventLog1.Source = eventSourceName;
+                eventLog1.Log = logName;
+
+                eventLog1.WriteEntry("start constructors of all members");
+                m_logging = new LoggingModel();
+                m_logging.MessageRecieved += OnMsg;
+                m_imageService = new ImageModel();
+                c_controller = new ImageController(m_imageService);
+                server = new ImageServer(c_controller, m_logging);
         }
 
         protected override void OnStart(string[] args)
         {
 
-            logMod = new LoggingModel();
-
-            //logMod.MessageRecieved += new EventHandler<MessageRecievedEventArgs>(this.OnMsg);
-            logMod.MessageRecieved += OnMsg;
-
+            eventLog1.WriteEntry("on start begin");
 
 
             // Update the service state to Start Pending.  
@@ -113,7 +110,7 @@ namespace ImageService
 
         protected override void OnStop()
         {
-
+            server.OnCloseServer();
             eventLog1.WriteEntry("In OnStop");
         }
 
