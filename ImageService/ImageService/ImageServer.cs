@@ -16,7 +16,6 @@ namespace ImageService
 
         #region Properties
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;          // The event that notifies about a new Command being recieved
-        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
 
         #endregion
 
@@ -34,22 +33,26 @@ namespace ImageService
 
         private void CreateHandler(string path)
         {
+            
             IDirectoryHandler d_handle = new DirectoyHandler(m_logging,c_controller,path);
             CommandRecieved += d_handle.OnCommandRecieved;
-            DirectoryClose += d_handle.StopHandleDirectory;
-
+            d_handle.DirectoryClose += CloseDirectory;
         }
+
         public void OnCloseServer()
         {
-            m_logging.Log("close Service", MessageTypeEnum.INFO);
-            Console.WriteLine("on close service - remove evemts");
-
-            DirectoryClose?.Invoke(this, null);
+            m_logging.Log("StartCloseService", MessageTypeEnum.INFO);
+            CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandState.CLOSE, null, "*");
+            CommandRecieved.Invoke(this, e);
         }
-        private void SendCommand(CommandRecievedEventArgs e)
+
+        public void CloseDirectory(object sender, DirectoryCloseEventArgs e)
         {
-            //CommandRecieved.Invoke(this, e);
-            Console.WriteLine("Image Server. send Command - WTF???");
+            IDirectoryHandler d = (DirectoyHandler)sender;
+            CommandRecieved -= d.OnCommandRecieved;
+            d.DirectoryClose -= CloseDirectory;
+            //TODO: print path of directory
+            m_logging.Log(e.Message , MessageTypeEnum.INFO);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace ImageService
 {
     interface IImageController
     {
-        string ExecuteCommand(int commandID, string[] args, out bool result);// Executing the Command Requet
+        string ExecuteCommand(int commandID, string[] args, out bool result,out MessageTypeEnum type);// Executing the Command Requet
     }
 }

@@ -15,9 +15,10 @@ namespace ImageService
             m_model = modal;            // Storing the Modal
         }
 
-        public string Execute(string[] args, out bool result)
+        public string Execute(string[] args, out bool result, out MessageTypeEnum type)
         {
-            return m_model.AddFile(args[0], out result);
+            return m_model.AddFile(args[0], out result,out type);
+
             // The String Will Return the New Path if result = true, and will return the error message
 
         }

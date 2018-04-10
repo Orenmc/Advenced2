@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloseHandleCommand.cs" />
     <Compile Include="NewFileCommand.cs" />
     <Compile Include="CommandRecievedEventArgs.cs" />
     <Compile Include="DirectoryCloseEventArgs.cs" />

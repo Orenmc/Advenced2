@@ -14,8 +14,7 @@ namespace ImageService
         private ILoggingModel m_loggingModel;
         List<FileSystemWatcher> watchers;
         private string dirPath;
-       // private string[] extends = { ".bmp", ".jpg", ".gif", ".png" };
-        string[] filters = { "*.bmp", "*.jpg", "*.gif", "*.png","*.PNG"};
+        string[] filters = { "*.bmp", "*.jpg", "*.gif", "*.png"};
 
         public DirectoyHandler(ILoggingModel loggingModel, IImageController imageController, string path)
         {
@@ -28,25 +27,34 @@ namespace ImageService
         }
 
 
-//        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
+        public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;
         
 
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
             
-            if(e.RequestDirPath == dirPath)
+            if(e.RequestDirPath == dirPath || e.RequestDirPath == "*")
             {
-                //for new File command taks the args[0].
-                string msg = c_imageController.ExecuteCommand(e.CommandID, e.Args, out bool result);
-                if (result)
+                if (e.CommandID == (int)CommandState.CLOSE)
                 {
-                    m_loggingModel.Log(msg, MessageTypeEnum.INFO);
-                    Console.WriteLine("good -directory handl - result");
+                    DirectoryCloseEventArgs e1 = new DirectoryCloseEventArgs(dirPath, "Stop handle directory: " + dirPath);
+                    StopHandleDirectory();
+                    DirectoryClose.Invoke(this, e1);
                 }
                 else
                 {
-                    m_loggingModel.Log(msg, MessageTypeEnum.FAIL);
-                    Console.WriteLine("notgood -directory handl - result");
+                    //for new File command taks the args[0].
+                    string msg = c_imageController.ExecuteCommand(e.CommandID, e.Args, out bool result , out MessageTypeEnum type);
+
+                    //TODO: check that the its written in the log!!!!
+                    if (result)
+                    {
+                        m_loggingModel.Log(msg, type);
+                    }
+                    else
+                    {
+                        m_loggingModel.Log(msg, MessageTypeEnum.FAIL);
+                    }
                 }
             }
             
@@ -54,28 +62,18 @@ namespace ImageService
 
         public void StartHandleDirectory(string dirPath)
         {
-            m_loggingModel.Log("Start handle " + dirPath, MessageTypeEnum.INFO);
-            Console.WriteLine("Directory handle - start listen to this folder " + dirPath);
-            /**
-            string[] alreadyFilesInDir = Directory.GetFiles(dirPath);
-            
-            foreach(string image in alreadyFilesInDir)
-            {
-                if (extends.Contains(Path.GetExtension(image)))
-                {
-                    string[] args = { image };
+            //DirectoryClose += StopHandleDirectory; 
 
-                    CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandState.NEW_FILE, args, null);
-                    OnCommandRecieved(this, e);
-                }
-            }
-            */
+           // m_loggingModel.Log("Start handle " + dirPath, MessageTypeEnum.INFO);
+           //TODO: no need to log this - its to early (before in start)
+
+
             //create fileSystemWatcher and for all filters { "*.bmp", "*.jpg", "*.gif", "*.png"}
             foreach (string f in filters)
             {
                 FileSystemWatcher w = new FileSystemWatcher(this.dirPath);
                 w.Filter = f;
-                w.Changed += new FileSystemEventHandler(OnImageCreated);
+               // w.Changed += new FileSystemEventHandler(OnImageCreated);
                 w.Created += new FileSystemEventHandler(OnImageCreated);
                 w.EnableRaisingEvents = true;
                 watchers.Add(w);
@@ -85,24 +83,19 @@ namespace ImageService
 
         private void OnImageCreated(object sender,FileSystemEventArgs e)
         {
-            Console.WriteLine("entered Directory handler -" + e.FullPath + "is the full path");
+            //Console.WriteLine("entered Directory handler -" + e.FullPath + "is the full path");
             string[] args = { e.FullPath };
             CommandRecievedEventArgs cArgs = new CommandRecievedEventArgs((int)CommandState.NEW_FILE, args, dirPath);
             OnCommandRecieved(this, cArgs);
             
         }
-        public void StopHandleDirectory(object sender, DirectoryCloseEventArgs e)
+        public void StopHandleDirectory()
         {
-            m_loggingModel.Log("Stop handle " + dirPath, MessageTypeEnum.INFO);
-            Console.WriteLine("entered Directory handler -" + dirPath + "is the full path");
+
             foreach (FileSystemWatcher w in watchers)
             {
                 w.EnableRaisingEvents = false;
             }
-            ImageServer imageServer = (ImageServer)sender;
-            imageServer.CommandRecieved -= OnCommandRecieved;
-            imageServer.DirectoryClose -= StopHandleDirectory;
-            Console.WriteLine("clear all watchers on directory - directory handle");
             watchers.Clear();
         }
     }

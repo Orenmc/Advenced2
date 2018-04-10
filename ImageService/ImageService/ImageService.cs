@@ -59,7 +59,6 @@ namespace ImageService
                 eventLog1.Source = eventSourceName;
                 eventLog1.Log = logName;
 
-                eventLog1.WriteEntry("start constructors of all members");
                 m_logging = new LoggingModel();
                 m_logging.MessageRecieved += OnMsg;
                 m_imageService = new ImageModel();
@@ -69,9 +68,7 @@ namespace ImageService
 
         protected override void OnStart(string[] args)
         {
-
-            eventLog1.WriteEntry("on start begin");
-
+          
 
             // Update the service state to Start Pending.  
             ServiceStatus serviceStatus = new ServiceStatus();
@@ -79,13 +76,16 @@ namespace ImageService
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            eventLog1.WriteEntry("In OnStart");
+            
 
+            m_logging.Log("In OnStart", MessageTypeEnum.INFO);
+            /*
             // Set up a timer to trigger every minute.  
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 60000; // 60 seconds  
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
             timer.Start();
+            */
 
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
@@ -104,14 +104,13 @@ namespace ImageService
                 eventLog1.WriteEntry(mra.Message, EventLogEntryType.Warning);
             }
 
-            Console.WriteLine("write to log");
-
         }
 
         protected override void OnStop()
         {
+            
             server.OnCloseServer();
-            eventLog1.WriteEntry("In OnStop");
+            m_logging.Log("Service Stopped", MessageTypeEnum.INFO);
         }
 
         public void OnTimer(object sender, System.Timers.ElapsedEventArgs args)
