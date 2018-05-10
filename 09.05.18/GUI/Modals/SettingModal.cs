@@ -15,6 +15,7 @@ namespace GUI
 		private string sourceName;
 		private string logName;
 		private string thumbnailSize;
+        private GuiClient client;
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public SettingModal()
@@ -23,11 +24,15 @@ namespace GUI
 			{
 				"snir","oren","ABBA","dada","what","gpgpg","shutUp"
 			};
-			outputDir = "Oren Ahronian";
-			sourceName = "sns";
-			logName = "sdasdasd";
-			thumbnailSize = "121212";
-		}
+			
+            client = GuiClient.GetInstance;
+            string[] s = client.ReadFromSever();
+            OutputDir = s[0];
+            SourceName = s[1];
+            LogName = s[2];
+            ThumbnailSize = s[3];
+
+        }
 
 		public void NotifyPropertyChanged(string propName)
 		{

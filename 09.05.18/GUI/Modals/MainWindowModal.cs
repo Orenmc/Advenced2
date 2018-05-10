@@ -1,39 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GUI
 {
-	class MainWindowModal : IMaimWindowModal
-	{
-		public event PropertyChangedEventHandler PropertyChanged;
-		private bool connected;
+    class MainWindowModal : IMaimWindowModal
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private bool connected;
+        private GuiClient client;
 
-		public MainWindowModal()
-		{
-			this.connected = false;
-		}
+        public MainWindowModal()
+        {
+            client = GuiClient.GetInstance;
+            this.connected = client.IsConnected;
 
-		public bool Connected
-		{
-			get => connected;
-			set
-			{
-				if (connected != value)
-				{
-					connected = value;
-					NotifyPropertyChanged("Connected");
+        }
 
-				}
-			}
-		}
+        public bool Connected
+        {
+            get => connected;
+            set
+            {
+                if (connected != value)
+                {
+                    connected = value;
+                    NotifyPropertyChanged("Connected");
 
-		public void NotifyPropertyChanged(string propName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-		}
-	}
+                }
+            }
+        }
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+    }
+
 }

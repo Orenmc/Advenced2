@@ -9,3 +9,9 @@ C:\Users\snirh\Desktop\06.05.18\Infrastructure\obj\Debug\Infrastructure.csproj.C
 C:\Users\snirh\Desktop\06.05.18\Infrastructure\obj\Debug\Infrastructure.dll
 C:\Users\snirh\Desktop\06.05.18\Infrastructure\obj\Debug\Infrastructure.pdb
 C:\Users\snirh\Desktop\06.05.18\Infrastructure\obj\Debug\Infrastructure.csprojResolveAssemblyReference.cache
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\bin\Debug\Infrastructure.dll
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\bin\Debug\Infrastructure.pdb
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\obj\Debug\Infrastructure.csprojResolveAssemblyReference.cache
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\obj\Debug\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\obj\Debug\Infrastructure.dll
+C:\Users\אורן\Desktop\09.05.18\Infrastructure\obj\Debug\Infrastructure.pdb

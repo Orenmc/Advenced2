@@ -16,11 +16,7 @@
 		</Style>
 	</Window.Resources>
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="315*"/>
-			<ColumnDefinition Width="65*"/>
-			<ColumnDefinition Width="414*"/>
-		</Grid.ColumnDefinitions>
+
 		<Button Grid.ColumnSpan="3" Margin="0,0,-0.4,0.4" IsHitTestVisible="False">
 			<Button.Style>
 				<Style TargetType="Button">

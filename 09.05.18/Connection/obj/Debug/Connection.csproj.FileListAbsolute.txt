@@ -1,0 +1,6 @@
+C:\Users\אורן\Desktop\09.05.18\Connection\bin\Debug\Connection.dll
+C:\Users\אורן\Desktop\09.05.18\Connection\bin\Debug\Connection.pdb
+C:\Users\אורן\Desktop\09.05.18\Connection\obj\Debug\Connection.csprojResolveAssemblyReference.cache
+C:\Users\אורן\Desktop\09.05.18\Connection\obj\Debug\Connection.csproj.CoreCompileInputs.cache
+C:\Users\אורן\Desktop\09.05.18\Connection\obj\Debug\Connection.dll
+C:\Users\אורן\Desktop\09.05.18\Connection\obj\Debug\Connection.pdb

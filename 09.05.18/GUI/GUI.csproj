@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GuiClient.cs" />
     <Compile Include="Modals\IMaimWindowModal.cs" />
     <Compile Include="Modals\MainWindowModal.cs" />
     <Compile Include="ViewModals\MainWindowViewModal.cs" />

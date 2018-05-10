@@ -4,6 +4,9 @@ using System.ServiceProcess;
 using System.Runtime.InteropServices;
 using System.Configuration;
 using Infrastructure;
+using Connection;
+
+ 
 
 public enum ServiceState
 {
@@ -38,7 +41,7 @@ namespace ImageService
         private ILoggingModel m_logging;
         private IImageController c_controller;
         private IImageModel m_imageService;
-        private ImageServer server;
+        private ImageServer imageServer;
 
         /// <summary>
         /// constructor - init logger, modal,server,controller
@@ -78,7 +81,16 @@ namespace ImageService
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             m_logging.Log("In OnStart", MessageTypeEnum.INFO);
-            server = new ImageServer(c_controller, m_logging);
+            imageServer = new ImageServer(c_controller, m_logging);
+
+
+
+            /************************
+             * TODO:
+             * open server().start
+             *************************/
+
+           // Test1 t = new Test1();       
 
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
@@ -112,7 +124,7 @@ namespace ImageService
             m_logging.Log("StartCloseService", MessageTypeEnum.INFO);
 
             CommandRecievedEventArgs e = new CommandRecievedEventArgs((int)CommandState.CLOSE, null, "*");
-            server.SendCommand(e);
+            imageServer.SendCommand(e);
             m_logging.Log("Service Stopped", MessageTypeEnum.INFO);
         }
 
