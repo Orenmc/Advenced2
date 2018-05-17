@@ -1,0 +1,7 @@
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\bin\Debug\client2.exe.config
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\bin\Debug\client2.exe
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\bin\Debug\client2.pdb
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\obj\Debug\client2.csprojResolveAssemblyReference.cache
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\obj\Debug\client2.csproj.CoreCompileInputs.cache
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\obj\Debug\client2.exe
+C:\Users\אורן\Desktop\advenced2\sever\server\client2\obj\Debug\client2.pdb
