@@ -1,0 +1,6 @@
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\bin\Debug\Infrastructure.dll
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\bin\Debug\Infrastructure.pdb
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\obj\Debug\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\obj\Debug\Infrastructure.dll
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\obj\Debug\Infrastructure.pdb
+C:\Users\אורן\Desktop\advenced2\ImageService\Infrastructure\obj\Debug\Infrastructure.csprojResolveAssemblyReference.cache
